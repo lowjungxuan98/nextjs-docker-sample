@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Next.js Docker Sample
 
-## Getting Started
+A minimal Next.js app packaged for Docker, with environment handling and CI/CD to Docker Hub.
 
-First, run the development server:
+### Phases
+- [Phase 1 — Environment secret setup and Docker image compilation](./phase_1.md)
+- [Phase 2 — CI/CD pipeline to build and push Docker images](./phase_2.md)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Quick start
+- **Local dev (Node)**
+  ```bash
+  npm install
+  npm run dev
+  # open http://localhost:3000
+  ```
+- **Run published Docker images (amd64)**
+  ```bash
+  docker compose up -d dev    # mcsgms/nextjs-docker-sample:development → http://localhost:3000
+  docker compose up -d prod   # mcsgms/nextjs-docker-sample:production  → http://localhost:3001
+  ```
+- **Verify**
+  ```bash
+  curl http://localhost:3000/api/secret-check   # dev
+  curl http://localhost:3001/api/secret-check   # prod
+  ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### CI/CD summary
+- **Branches**: `development` → `mcsgms/nextjs-docker-sample:development`, `production` → `:production`
+- **Workflow**: `.github/workflows/docker-publish.yml`
+- **Secrets (per GitHub Environment)**: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `NEXT_PUBLIC_SECRET`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Notes
+- Images are built on GitHub-hosted runners (amd64). See `phase_2.md` for optional multi-arch.

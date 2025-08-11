@@ -1,27 +1,39 @@
 version: "3.9"
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: nextjs-docker-sample:prod
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_SECRET: Production_Secret_Value
-      PORT: 3000
+# Local
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: nextjs-docker-sample:prod
+  #   environment:
+  #     NODE_ENV: production
+  #     NEXT_PUBLIC_SECRET: Production_Secret_Value
+  #     PORT: 3000
+  #   ports:
+  #     - "3001:3000"
+  #   restart: unless-stopped
+
+  # dev:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: nextjs-docker-sample:dev
+  #   environment:
+  #     NODE_ENV: development
+  #     NEXT_PUBLIC_SECRET: Development_Secret_Value
+  #     PORT: 3000
+  #   ports:
+  #     - "3000:3000"
+# Docker Hub
+  prod:
+    platform: linux/amd64
+    image: mcsgms/nextjs-docker-sample:production
     ports:
       - "3001:3000"
-    restart: unless-stopped
-
   dev:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: nextjs-docker-sample:dev
-    environment:
-      NODE_ENV: development
-      NEXT_PUBLIC_SECRET: Development_Secret_Value
-      PORT: 3000
+    platform: linux/amd64
+    image: mcsgms/nextjs-docker-sample:development
     ports:
       - "3000:3000"

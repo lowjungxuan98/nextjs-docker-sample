@@ -2,6 +2,10 @@
 FROM node:20-bookworm-slim AS builder
 WORKDIR /app
 
+# Allow passing public secret at build time for Next.js build
+ARG NEXT_PUBLIC_SECRET
+ENV NEXT_PUBLIC_SECRET=$NEXT_PUBLIC_SECRET
+
 # Install OS deps only if your project needs them (e.g. sharp)
 # RUN apt-get update && apt-get install -y build-essential python3 && rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +23,8 @@ FROM node:20-bookworm-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
+ARG NEXT_PUBLIC_SECRET
+ENV NEXT_PUBLIC_SECRET=$NEXT_PUBLIC_SECRET
 
 # Create non-root user
 RUN useradd -m nextjs
